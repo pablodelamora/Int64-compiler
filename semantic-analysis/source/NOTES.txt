@@ -1,0 +1,116 @@
+The following is a list of nodes with their structure:
+	1) NProgram:
+		1) NVarDefList
+		2) NFunDefList
+	2) NVarDefList
+		*) NVarDef
+	3) NFunDefList
+		+) NFunDef
+	4) NVarDef: (no children, identifier is in anchor token)
+	5) NFunDef: (identifier is in anchor token)
+		1) NParameterList
+		2) NVarDefList
+		3) NStmtList
+	6) NParameterList:
+		o*) NParameter
+	7) NParameter: (identifier is in anchor token)
+	8) NStmtList:
+		*) NAssign
+		*) NFunCall
+		*) NIfStmt
+		*) NSwitchStmt
+		*) NWhileStmt
+		*) NDoWhileStmt
+		*) NForStmt
+		*) NBreak
+		*) NContinue
+		*) NReturn
+	9) NAssign: (identifier is in anchor token)
+		1) NExpr
+	10) NFunCall (identifier is in anchor token)
+		1) NExprList
+	11) NExprList
+		*) NExpr
+	12) NExpr
+		1) NExprOr
+		2?)
+			1) NExpr
+			2) NExpr
+	13) NIfStmt:
+		1) NExpr
+		2) NStmtList
+		o*) (These children are the optional else if statements)
+			1) NExpr
+			2) NStmtList
+		4?) NStmtList (This child is the optional else statement)
+	14) NSwitchStmt:
+		1) NExpr
+		2) NCaseList (this is the case list)
+		3?) NStmtList (this would be the statement list for the default action)
+	15) NCaseList:
+		*) NCase
+	16) NCase:
+		*) NLitBool
+		*) NLitInt
+		*) NLitChar
+		4) NStmtList
+	17) NWhileStmt:
+		1) NExpr
+		2) NStmtList
+	18) NDoWhileStmt:
+		1) NStmtList
+		2) NExpr
+	19) NForStmt: (identifier is in anchor token)
+		1) NExpr
+		2) NStmtList
+	20) NBreak
+	21) NContinue
+	22) NReturn:
+		1) NExpr
+	23) NExprOr:
+		+) NExprAnd
+	24) NExprAnd:
+		+) NExprComp
+	25) NExprComp: (op-comp in anchor token if two children)
+		1) NExprRel
+		2?) NExprComp
+	26) NExprRel: (op-rel in anchor token if two children)
+		1) NExprBitOr
+		2?) NExprRel
+	27) NExprBitOr: (op-bit-or in anchor token if two children)
+		1) NExprBitAnd
+		2?) NExprBitOr
+	28) NExprBitAnd:
+		+) NExprBitShift
+	29) NExprBitShift: (op-bit-shift in anchor token if two children)
+		1) NExprAdd
+		2?) NExprBitShift
+	30) NExprAdd: (op-add in anchor token if two children)
+		1) NExprMul
+		2?) NExprAdd
+	31) NExprMul: (op-mul in anchor token if two children)
+		1) NExprPow
+		2?) NExprMul
+	32) NExprPow:
+		1) NExprUnary
+		2?) NExprPow
+	33) NExprUnary: (op-unary in anchor token if child is NExprUnary)
+		|)
+			1) NExprUnary
+			2) NExprPrimary
+	34) NExprPrimary (identifier in anchor token if no children (case 1))
+		|)
+			1) <None> (When node refers to variable)
+			2) NFunCall
+			3) NLitBool
+			4) NLitInt
+			5) NLitChar
+			6) NLitString
+			7) NArrayList
+			8) NExpr
+	35) NArrayList:
+		*)
+			1) NLitBool
+			2) NLitInt
+			3) NLitChar
+Note: If numbered, order is assumed; if quantified unorder is assumed unless quantifier is preceded by o.
